@@ -87,6 +87,7 @@ const testimonials = [
 export default function Landing() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeScreen, setActiveScreen] = useState(0);
 
   function scrollTo(id) {
     setMenuOpen(false);
@@ -367,6 +368,333 @@ export default function Landing() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
+          SEE IT IN ACTION — App Mockups + Tutorial
+      ═══════════════════════════════════════════════════════════════ */}
+      <section id="screenshots" style={{ padding: "100px 24px", backgroundColor: BRAND.gray }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+
+          {/* Header */}
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <span style={{ display: "inline-block", backgroundColor: "rgba(11,62,168,0.08)", color: BRAND.blue, padding: "5px 16px", borderRadius: 20, fontSize: 12, fontWeight: 800, letterSpacing: 1, textTransform: "uppercase", marginBottom: 14 }}>
+              See It In Action
+            </span>
+            <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 900, margin: "0 0 14px 0" }}>
+              A real look at the app
+            </h2>
+            <p style={{ fontSize: 17, color: BRAND.textLight, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
+              Clean, simple screens designed for people who work with their hands — not accountants.
+            </p>
+          </div>
+
+          {/* Tab Buttons */}
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginBottom: 36 }}>
+            {[
+              { icon: "📊", label: "Admin Dashboard" },
+              { icon: "📱", label: "Employee Clock-In" },
+              { icon: "📋", label: "Weekly Timesheet" },
+              { icon: "📍", label: "Job Tracking" },
+            ].map((tab, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveScreen(i)}
+                style={{
+                  display: "flex", alignItems: "center", gap: 8,
+                  padding: "10px 22px", borderRadius: 10, fontSize: 14, fontWeight: 700,
+                  cursor: "pointer", border: "2px solid",
+                  borderColor: activeScreen === i ? BRAND.blue : "#e2e8f0",
+                  background: activeScreen === i ? BRAND.blue : "#fff",
+                  color: activeScreen === i ? "#fff" : BRAND.textMid,
+                  boxShadow: activeScreen === i ? "0 4px 16px rgba(11,62,168,0.25)" : "none",
+                  transition: "all 0.15s",
+                }}
+              >
+                <span>{tab.icon}</span> {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Browser Chrome Frame */}
+          <div style={{
+            background: "#1e293b",
+            borderRadius: 16,
+            overflow: "hidden",
+            boxShadow: "0 24px 80px rgba(0,0,0,0.25)",
+            maxWidth: 900,
+            margin: "0 auto",
+          }}>
+            {/* Browser Top Bar */}
+            <div style={{
+              background: "#334155",
+              padding: "12px 16px",
+              display: "flex", alignItems: "center", gap: 12,
+            }}>
+              <div style={{ display: "flex", gap: 7 }}>
+                <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#ef4444" }} />
+                <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#f59e0b" }} />
+                <div style={{ width: 12, height: 12, borderRadius: "50%", background: "#22c55e" }} />
+              </div>
+              <div style={{
+                flex: 1, background: "#1e293b", borderRadius: 6,
+                padding: "5px 14px", fontSize: 12, color: "#94a3b8",
+                fontFamily: "monospace", textAlign: "center",
+              }}>
+                app.tradeflowllc.com/{["dashboard", "clock", "timesheets", "jobs"][activeScreen]}
+              </div>
+            </div>
+
+            {/* Screen Content */}
+            <div style={{ background: "#f8fafc", minHeight: 440 }}>
+
+              {/* ── SCREEN 0: Admin Dashboard ── */}
+              {activeScreen === 0 && (
+                <div style={{ padding: 24 }}>
+                  {/* Top bar */}
+                  <div style={{ background: BRAND.blue, borderRadius: 12, padding: "14px 20px", marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <div style={{ background: BRAND.orange, borderRadius: 8, width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 13, fontStyle: "italic" }}>TF</div>
+                      <span style={{ color: "#fff", fontWeight: 800, fontSize: 15 }}>TradeFlow Admin</span>
+                    </div>
+                    <span style={{ color: "rgba(255,255,255,0.7)", fontSize: 12 }}>Acme Electric Co.</span>
+                  </div>
+                  {/* Stat cards */}
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 20 }}>
+                    {[
+                      { label: "Clocked In Now", value: "5", icon: "🟢", color: "#dcfce7", border: "#86efac", text: "#166534" },
+                      { label: "Active Jobs", value: "3", icon: "📍", color: "#dbeafe", border: "#93c5fd", text: "#1d4ed8" },
+                      { label: "Hours This Week", value: "142h", icon: "⏱️", color: "#fef3c7", border: "#fcd34d", text: "#92400e" },
+                    ].map((s, i) => (
+                      <div key={i} style={{ background: s.color, border: `1.5px solid ${s.border}`, borderRadius: 10, padding: "14px 16px" }}>
+                        <div style={{ fontSize: 18, marginBottom: 4 }}>{s.icon}</div>
+                        <div style={{ fontSize: 22, fontWeight: 900, color: s.text }}>{s.value}</div>
+                        <div style={{ fontSize: 11, color: s.text, fontWeight: 600 }}>{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Live crew table */}
+                  <div style={{ background: "#fff", borderRadius: 10, border: "1px solid #e5e7eb", overflow: "hidden" }}>
+                    <div style={{ padding: "10px 16px", background: "#f1f5f9", borderBottom: "1px solid #e5e7eb", display: "grid", gridTemplateColumns: "2fr 2fr 1fr 1fr", fontSize: 11, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                      <span>Employee</span><span>Job Site</span><span>Clocked In</span><span>Hours</span>
+                    </div>
+                    {[
+                      { name: "Jake M.", job: "Sunrise Electrical", time: "7:32 AM", hrs: "4.5h" },
+                      { name: "Carlos R.", job: "Downtown Reno", time: "7:45 AM", hrs: "4.2h" },
+                      { name: "Mike T.", job: "Riverside HVAC", time: "8:01 AM", hrs: "4.0h" },
+                      { name: "Sarah K.", job: "Main St. Plumbing", time: "8:15 AM", hrs: "3.7h" },
+                      { name: "Tony V.", job: "Sunrise Electrical", time: "8:30 AM", hrs: "3.5h" },
+                    ].map((r, i) => (
+                      <div key={i} style={{ padding: "10px 16px", display: "grid", gridTemplateColumns: "2fr 2fr 1fr 1fr", fontSize: 13, borderBottom: i < 4 ? "1px solid #f1f5f9" : "none", alignItems: "center" }}>
+                        <span style={{ fontWeight: 700 }}>{r.name}</span>
+                        <span style={{ color: "#6b7280" }}>{r.job}</span>
+                        <span style={{ color: "#6b7280" }}>{r.time}</span>
+                        <span style={{ background: "#dcfce7", color: "#166534", borderRadius: 6, padding: "2px 8px", fontWeight: 700, fontSize: 12, display: "inline-block" }}>{r.hrs} 🟢</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── SCREEN 1: Employee Clock-In (Phone) ── */}
+              {activeScreen === 1 && (
+                <div style={{ display: "flex", justifyContent: "center", padding: "24px 24px 32px" }}>
+                  <div style={{
+                    width: 260,
+                    background: "#fff",
+                    borderRadius: 32,
+                    border: "8px solid #1e293b",
+                    boxShadow: "0 12px 40px rgba(0,0,0,0.2)",
+                    overflow: "hidden",
+                    position: "relative",
+                  }}>
+                    {/* Phone notch */}
+                    <div style={{ background: "#1e293b", height: 28, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <div style={{ width: 60, height: 6, background: "#0f172a", borderRadius: 3 }} />
+                    </div>
+                    {/* App content */}
+                    <div style={{ padding: "16px 16px 24px", background: "#f8fafc" }}>
+                      {/* App header */}
+                      <div style={{ background: BRAND.blue, borderRadius: 12, padding: "12px 14px", marginBottom: 14, display: "flex", alignItems: "center", gap: 8 }}>
+                        <div style={{ background: BRAND.orange, borderRadius: 6, width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 900, fontSize: 11, fontStyle: "italic" }}>TF</div>
+                        <span style={{ color: "#fff", fontWeight: 800, fontSize: 13 }}>TradeFlow</span>
+                        <span style={{ marginLeft: "auto", fontSize: 18 }}>👤</span>
+                      </div>
+                      {/* Greeting */}
+                      <p style={{ fontWeight: 800, fontSize: 14, color: BRAND.textDark, margin: "0 0 2px" }}>Good morning, Jake! 👋</p>
+                      <p style={{ fontSize: 11, color: BRAND.textLight, margin: "0 0 14px" }}>Tuesday, June 24 · 7:31 AM</p>
+                      {/* GPS status */}
+                      <div style={{ background: "#dcfce7", border: "1px solid #86efac", borderRadius: 8, padding: "8px 10px", marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+                        <span style={{ fontSize: 14 }}>📍</span>
+                        <div>
+                          <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: "#166534" }}>GPS CONFIRMED</p>
+                          <p style={{ margin: 0, fontSize: 10, color: "#15803d" }}>1423 Sunrise Blvd</p>
+                        </div>
+                      </div>
+                      {/* Job selector */}
+                      <div style={{ background: "#fff", border: "1.5px solid #e2e8f0", borderRadius: 8, padding: "8px 10px", marginBottom: 14 }}>
+                        <p style={{ margin: 0, fontSize: 10, fontWeight: 700, color: BRAND.textLight, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>Select Job</p>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                          <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: BRAND.textDark }}>Sunrise Electrical – Unit 4B</p>
+                          <span style={{ color: BRAND.textLight }}>▾</span>
+                        </div>
+                      </div>
+                      {/* Clock In Button */}
+                      <div style={{
+                        background: BRAND.orange,
+                        borderRadius: 14, padding: "16px",
+                        textAlign: "center",
+                        boxShadow: "0 4px 20px rgba(252,107,4,0.4)",
+                        cursor: "pointer",
+                      }}>
+                        <div style={{ fontSize: 28, marginBottom: 4 }}>⏱️</div>
+                        <p style={{ margin: 0, color: "#fff", fontWeight: 900, fontSize: 16 }}>CLOCK IN</p>
+                        <p style={{ margin: "2px 0 0", color: "rgba(255,255,255,0.8)", fontSize: 10 }}>Tap to start your shift</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── SCREEN 2: Weekly Timesheet ── */}
+              {activeScreen === 2 && (
+                <div style={{ padding: 24 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                    <div>
+                      <p style={{ margin: 0, fontWeight: 900, fontSize: 16, color: BRAND.textDark }}>📋 Weekly Timesheets</p>
+                      <p style={{ margin: "2px 0 0", fontSize: 12, color: BRAND.textLight }}>Week of June 16 – June 22, 2025</p>
+                    </div>
+                    <div style={{ background: "#dcfce7", border: "1px solid #86efac", color: "#166534", borderRadius: 8, padding: "7px 16px", fontWeight: 800, fontSize: 13, cursor: "pointer" }}>
+                      ✅ Approve All
+                    </div>
+                  </div>
+                  <div style={{ background: "#fff", borderRadius: 10, border: "1px solid #e5e7eb", overflow: "hidden" }}>
+                    {/* Header row */}
+                    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr 1.2fr", padding: "10px 14px", background: BRAND.blue, fontSize: 11, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: 0.5 }}>
+                      <span>Employee</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Total</span>
+                    </div>
+                    {[
+                      { name: "Jake M.", days: ["8.5", "8.0", "9.0", "8.5", "7.0"], total: "41.0h" },
+                      { name: "Carlos R.", days: ["8.0", "8.5", "8.0", "7.5", "8.0"], total: "40.0h" },
+                      { name: "Mike T.", days: ["9.0", "—", "8.5", "8.0", "8.5"], total: "34.0h" },
+                      { name: "Sarah K.", days: ["7.5", "8.0", "8.0", "8.5", "8.0"], total: "40.0h" },
+                    ].map((r, i) => (
+                      <div key={i} style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr 1.2fr", padding: "10px 14px", fontSize: 13, borderBottom: i < 3 ? "1px solid #f1f5f9" : "none", alignItems: "center", background: i % 2 === 0 ? "#fff" : "#f8fafc" }}>
+                        <span style={{ fontWeight: 700 }}>{r.name}</span>
+                        {r.days.map((d, j) => (
+                          <span key={j} style={{ color: d === "—" ? "#d1d5db" : BRAND.textMid, fontWeight: d === "—" ? 400 : 600 }}>{d}</span>
+                        ))}
+                        <span style={{ background: "#dbeafe", color: "#1d4ed8", borderRadius: 6, padding: "2px 8px", fontWeight: 800, fontSize: 12, display: "inline-block" }}>{r.total}</span>
+                      </div>
+                    ))}
+                    {/* Total row */}
+                    <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr 1fr 1.2fr", padding: "10px 14px", background: "#f1f5f9", borderTop: "2px solid #e2e8f0", fontSize: 13, fontWeight: 800 }}>
+                      <span style={{ color: BRAND.textDark }}>Total</span>
+                      {["33.0", "24.5", "33.5", "32.5", "31.5"].map((t, i) => <span key={i} style={{ color: BRAND.blue }}>{t}</span>)}
+                      <span style={{ color: BRAND.orange, fontSize: 14 }}>155.0h</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── SCREEN 3: Job Tracking ── */}
+              {activeScreen === 3 && (
+                <div style={{ padding: 24 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                    <div>
+                      <p style={{ margin: 0, fontWeight: 900, fontSize: 16, color: BRAND.textDark }}>📍 Job Tracking</p>
+                      <p style={{ margin: "2px 0 0", fontSize: 12, color: BRAND.textLight }}>All active jobs this month</p>
+                    </div>
+                    <div style={{ background: BRAND.orange, color: "#fff", borderRadius: 8, padding: "7px 14px", fontWeight: 800, fontSize: 12, cursor: "pointer" }}>
+                      + Add Job
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    {[
+                      { name: "Sunrise Electrical", sub: "Unit 4B – Phase 2", hrs: "47.5h", emps: 2, status: "Active", statusColor: "#dcfce7", statusText: "#166534" },
+                      { name: "Downtown Renovation", sub: "1st & Main – Rough-in", hrs: "32.0h", emps: 1, status: "Active", statusColor: "#dcfce7", statusText: "#166534" },
+                      { name: "Riverside HVAC", sub: "Commercial buildout", hrs: "28.0h", emps: 3, status: "Active", statusColor: "#dcfce7", statusText: "#166534" },
+                      { name: "Oak Park Plumbing", sub: "Inspection passed ✓", hrs: "61.0h", emps: 2, status: "Complete", statusColor: "#e0e7ff", statusText: "#3730a3" },
+                    ].map((j, i) => (
+                      <div key={i} style={{ background: "#fff", borderRadius: 10, border: "1px solid #e5e7eb", padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <div>
+                          <p style={{ margin: 0, fontWeight: 800, fontSize: 14, color: BRAND.textDark }}>{j.name}</p>
+                          <p style={{ margin: "2px 0 0", fontSize: 12, color: BRAND.textLight }}>{j.sub}</p>
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                          <div style={{ textAlign: "center" }}>
+                            <p style={{ margin: 0, fontWeight: 900, color: BRAND.blue, fontSize: 15 }}>{j.hrs}</p>
+                            <p style={{ margin: 0, fontSize: 10, color: BRAND.textLight }}>hrs logged</p>
+                          </div>
+                          <div style={{ textAlign: "center" }}>
+                            <p style={{ margin: 0, fontWeight: 900, color: BRAND.textDark, fontSize: 15 }}>{j.emps}</p>
+                            <p style={{ margin: 0, fontSize: 10, color: BRAND.textLight }}>employees</p>
+                          </div>
+                          <span style={{ background: j.statusColor, color: j.statusText, borderRadius: 6, padding: "4px 10px", fontWeight: 800, fontSize: 11 }}>{j.status}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Tutorial captions */}
+          <div style={{ maxWidth: 900, margin: "32px auto 0", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+            {[
+              {
+                active: activeScreen === 0,
+                steps: ["Admin opens the dashboard", "Sees every employee clocked in live", "Views job sites and hours in real time"],
+              },
+              {
+                active: activeScreen === 1,
+                steps: ["Employee opens app on phone", "GPS confirms their location", "Selects job and taps Clock In"],
+              },
+              {
+                active: activeScreen === 2,
+                steps: ["Hours auto-fill each day", "Admin reviews and edits if needed", "Click Approve All for payroll"],
+              },
+              {
+                active: activeScreen === 3,
+                steps: ["Create a job in seconds", "Hours log automatically as crew clocks in", "See total hours and employees per job"],
+              },
+            ][activeScreen] && (
+              <div style={{ gridColumn: "1 / -1" }}>
+                <div style={{ background: "#fff", borderRadius: 14, border: "1px solid #e5e7eb", padding: "20px 24px", display: "flex", gap: 32, flexWrap: "wrap", justifyContent: "center" }}>
+                  {[
+                    {
+                      steps: ["Admin opens the dashboard", "Sees every employee clocked in live", "Views job sites and hours in real time"],
+                    },
+                    {
+                      steps: ["Employee opens app on phone", "GPS confirms their location", "Selects job and taps Clock In"],
+                    },
+                    {
+                      steps: ["Hours auto-fill each day", "Admin reviews and edits if needed", "Click Approve All for payroll"],
+                    },
+                    {
+                      steps: ["Create a job in seconds", "Hours log automatically as crew clocks in", "See total hours and employees per job"],
+                    },
+                  ][activeScreen].steps.map((step, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{
+                        width: 30, height: 30, borderRadius: "50%", flexShrink: 0,
+                        background: BRAND.blue, color: "#fff",
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        fontWeight: 900, fontSize: 14,
+                      }}>
+                        {i + 1}
+                      </div>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: BRAND.textMid }}>{step}</span>
+                      {i < 2 && <span style={{ color: "#d1d5db", fontSize: 20, fontWeight: 300 }}>→</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
       </section>
 

@@ -149,6 +149,11 @@ export default function GetStarted() {
 
       if (empError) throw empError;
 
+      // 5. Embed company_id into the user's JWT metadata for RLS policies
+      await supabase.auth.updateUser({
+        data: { company_id: company.id },
+      });
+
       // Success!
       setCreatedSlug(form.slug);
       setStep(2);

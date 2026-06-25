@@ -120,13 +120,17 @@ export default function GetStarted() {
       const userId = authData.user?.id;
       if (!userId) throw new Error("Failed to create account. Please try again.");
 
-      // 3. Create company record
+      // 3. Create company record (starts 14-day trial)
+      const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString();
       const { data: company, error: coError } = await supabase
         .from("companies")
         .insert({
           name: form.companyName.trim(),
           slug: form.slug,
           primary_color: BRAND.orange,
+          subscription_status: "trial",
+          subscription_tier: "basic",
+          trial_ends_at: trialEndsAt,
         })
         .select()
         .single();

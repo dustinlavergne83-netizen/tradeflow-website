@@ -234,7 +234,7 @@ export default function GetStarted() {
       // 4. Show success
       setStep(3);
       setTimeout(() => {
-        window.location.href = `${APP_URL}?welcome=1`;
+        window.location.href = "/signin";
       }, 4000);
 
     } catch (err) {
@@ -306,7 +306,7 @@ export default function GetStarted() {
           </div>
 
           <a
-            href={`${APP_URL}?welcome=1`}
+            href="/signin"
             style={{
               display: "block", padding: "15px",
               background: BRAND.orange, color: "#fff",
@@ -315,7 +315,7 @@ export default function GetStarted() {
               boxShadow: "0 4px 20px rgba(252,107,4,0.4)",
             }}
           >
-            Go to My Dashboard →
+            Sign In to Your Dashboard →
           </a>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Landing from "./pages/Landing";
 import GetStarted from "./pages/GetStarted";
 import SignIn from "./pages/SignIn";
+import CancelSubscription from "./pages/CancelSubscription";
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/get-started" element={<GetStarted />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route path="/cancel" element={<CancelSubscription />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

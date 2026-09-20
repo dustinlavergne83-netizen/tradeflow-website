@@ -58,6 +58,7 @@ export default function GetStarted() {
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     phone: "",
     tradeType: "",
   });
@@ -145,6 +146,7 @@ export default function GetStarted() {
     if (!form.firstName.trim()) { setError("First name is required."); return; }
     if (!form.email.trim()) { setError("Email is required."); return; }
     if (form.password.length < 8) { setError("Password must be at least 8 characters."); return; }
+    if (form.password !== form.confirmPassword) { setError("Passwords do not match."); return; }
     if (!form.tradeType) { setError("Please select your trade type."); return; }
 
     // Check slug availability early
@@ -231,10 +233,15 @@ export default function GetStarted() {
         password: form.password,
       });
 
-      // 4. Show success
+      // 4. Show success — send them straight to the app's own login page
+      // (not this marketing site's /signin) so the "Account created!"
+      // welcome banner (Login.tsx's ?welcome=1 handling) actually fires.
+      // The Supabase session created above lives on this site's origin and
+      // does not carry over to app.tradeflowllc.com, so they still sign in
+      // once more there — same as any returning user.
       setStep(3);
       setTimeout(() => {
-        window.location.href = "/signin";
+        window.location.href = `${APP_URL}/login?welcome=1`;
       }, 4000);
 
     } catch (err) {
@@ -306,7 +313,7 @@ export default function GetStarted() {
           </div>
 
           <a
-            href="/signin"
+            href={`${APP_URL}/login?welcome=1`}
             style={{
               display: "block", padding: "15px",
               background: BRAND.orange, color: "#fff",
@@ -609,6 +616,18 @@ export default function GetStarted() {
               <input
                 type="password" value={form.password} onChange={set("password")}
                 placeholder="At least 8 characters" required autoComplete="new-password"
+                style={inputStyle}
+                onFocus={e => e.target.style.borderColor = BRAND.blue}
+                onBlur={e => e.target.style.borderColor = "#d1d5db"}
+              />
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label style={labelStyle}>Confirm Password *</label>
+              <input
+                type="password" value={form.confirmPassword} onChange={set("confirmPassword")}
+                placeholder="Re-enter your password" required autoComplete="new-password"
                 style={inputStyle}
                 onFocus={e => e.target.style.borderColor = BRAND.blue}
                 onBlur={e => e.target.style.borderColor = "#d1d5db"}

@@ -49,39 +49,17 @@ export default function SignIn() {
         return;
       }
 
-      // Look up their employee record to find their company slug
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Authentication failed.");
-
-      const { data: emp } = await supabase
-        .from("employees")
-        .select("company_id, role")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if (!emp?.company_id) {
-        // No company — redirect to app root
-        window.location.href = APP_URL;
-        return;
-      }
-
-      // Get company slug
-      const { data: company } = await supabase
-        .from("companies")
-        .select("slug")
-        .eq("id", emp.company_id)
-        .maybeSingle();
-
-      if (company?.slug) {
-        // Admin/supervisor → go to dashboard; employee → go to clock
-        if (emp.role === "admin" || emp.role === "supervisor") {
-          window.location.href = `${APP_URL}/${company.slug}/dashboard`;
-        } else {
-          window.location.href = `${APP_URL}/${company.slug}/clock`;
-        }
-      } else {
-        window.location.href = APP_URL;
-      }
+      // NOTE: this marketing-site Supabase session does NOT carry over to
+      // app.tradeflowllc.com (separate origin/localStorage), so the user
+      // will land on the app's own /login and sign in there again. The
+      // app itself (AuthContext + SmartRedirect in App.tsx) is the single
+      // source of truth for where a logged-in user belongs — company
+      // scoping is resolved server-side from employees.company_id, not
+      // from a URL slug. There is no per-tenant URL path in the app
+      // (previously this redirected to `${APP_URL}/${slug}/dashboard` or
+      // `/clock`, neither of which exist as routes), so just hand off to
+      // the app's login and let it route from there.
+      window.location.href = `${APP_URL}/login`;
 
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");

@@ -184,8 +184,13 @@ export default function GetStarted() {
 
     setLoading(true);
     try {
-      // 1. Tokenize card via Clover SDK
-      const result = await cloverObj.instance.createToken();
+      // 1. Tokenize card via Clover SDK.
+      // isMultipayToken: true is required — without it, Clover issues a
+      // single-use token that /v1/customers (card-on-file for later
+      // recurring billing) rejects with a generic "Please provide a valid
+      // source or token" error. Confirmed via Clover's own developer
+      // community: https://community.clover.com/questions/34645
+      const result = await cloverObj.instance.createToken({ isMultipayToken: true });
 
       if (result.errors && Object.keys(result.errors).length > 0) {
         const msgs = Object.values(result.errors).join(" · ");
@@ -224,7 +229,19 @@ export default function GetStarted() {
         }
       );
 
-      if (fnError) throw new Error(fnError.message || "Account creation failed.");
+      if (fnError) {
+        // supabase-js's FunctionsHttpError always carries the generic
+        // message "Edge Function returned a non-2xx status code" — the
+        // actual { success:false, error:"..." } body the function sent
+        // back only lives on fnError.context (a Response object), and
+        // must be parsed out explicitly or the real reason is hidden.
+        let detail = "";
+        try {
+          const body = await fnError.context?.json?.();
+          detail = body?.error || "";
+        } catch (_) { /* context wasn't JSON — fall through to generic */ }
+        throw new Error(detail || fnError.message || "Account creation failed.");
+      }
       if (!data?.success) throw new Error(data?.error || "Account creation failed.");
 
       // 3. Sign in automatically so they have a session

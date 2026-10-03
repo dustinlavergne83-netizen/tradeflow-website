@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
@@ -66,9 +66,8 @@ export default function GetStarted() {
 
   // ── Clover payment state ──────────────────────────────────────────────────
   const [sdkReady, setSdkReady] = useState(false);
-  const [cloverObj, setCloverObj] = useState(null); // { instance, card }
+  const [cloverObj, setCloverObj] = useState(null); // { instance }
   const [cardError, setCardError] = useState("");
-  const cardMountRef = useRef(null);
 
   // ── Load Clover SDK when reaching step 2 ─────────────────────────────────
   useEffect(() => {
@@ -96,21 +95,21 @@ export default function GetStarted() {
     }
 
     const tid = setTimeout(() => {
-      if (!cardMountRef.current || cloverObj) return;
+      if (cloverObj) return;
       try {
+        // Four separate elements (CARD_NUMBER/DATE/CVV/POSTAL_CODE) instead
+        // of one combined "CARD" element — this is the same pattern used by
+        // the in-app CloverCardForm.tsx, which is confirmed (via DML
+        // Electrical's live data) to return card.brand/card.last4 on
+        // createToken(). The combined "CARD" element does not reliably
+        // return those fields.
         const cloverInstance = new window.Clover(CLOVER_PUBLIC_KEY);
         const elements = cloverInstance.elements();
-        const cardElement = elements.create("CARD", {
-          styles: {
-            body: {
-              fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-              fontSize: "15px",
-              color: "#111827",
-            },
-          },
-        });
-        cardElement.mount("#clover-card-element");
-        setCloverObj({ instance: cloverInstance, card: cardElement });
+        elements.create("CARD_NUMBER").mount("#gs-card-number");
+        elements.create("CARD_DATE").mount("#gs-card-date");
+        elements.create("CARD_CVV").mount("#gs-card-cvv");
+        elements.create("CARD_POSTAL_CODE").mount("#gs-card-postal");
+        setCloverObj({ instance: cloverInstance });
       } catch (e) {
         console.error("Clover init error:", e);
         setError("Failed to initialize payment form. Please refresh and try again.");
@@ -213,7 +212,10 @@ export default function GetStarted() {
 
       // Clover's ecommerce customer API does not return card brand/last4 on
       // the customer object, so the only place we can capture display info
-      // is the tokenization result itself, here in the browser.
+      // is the tokenization result itself, here in the browser. Logged once
+      // so the exact response shape is visible in prod if these ever come
+      // back empty again.
+      console.log("Clover createToken result:", JSON.stringify(result));
       const cardBrand = result?.card?.brand || result?.token?.card?.brand;
       const cardLast4 = result?.card?.last4 || result?.token?.card?.last4;
 
@@ -290,6 +292,11 @@ export default function GetStarted() {
   const labelStyle = {
     display: "block", fontSize: 13, fontWeight: 700,
     color: "#374151", marginBottom: 6,
+  };
+  const cloverFieldStyle = {
+    border: "1.5px solid #d1d5db", borderRadius: 10,
+    padding: "12px 14px", minHeight: 48,
+    backgroundColor: "#fff", boxSizing: "border-box",
   };
 
   // ── STEP 3: Success ───────────────────────────────────────────────────────
@@ -425,20 +432,25 @@ export default function GetStarted() {
             </div>
 
             <form onSubmit={handleStartTrial} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              {/* Clover embedded card form */}
+              {/* Clover embedded card form — four separate elements (see
+                  mount effect above for why, vs. one combined element) */}
               <div>
-                <label style={labelStyle}>Card Information</label>
-                <div
-                  id="clover-card-element"
-                  ref={cardMountRef}
-                  style={{
-                    border: "1.5px solid #d1d5db",
-                    borderRadius: 10,
-                    padding: "4px 2px",
-                    minHeight: 52,
-                    backgroundColor: "#fff",
-                  }}
-                />
+                <label style={labelStyle}>Card Number</label>
+                <div id="gs-card-number" style={cloverFieldStyle} />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, marginTop: 12 }}>
+                  <div>
+                    <label style={labelStyle}>Expiry</label>
+                    <div id="gs-card-date" style={cloverFieldStyle} />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>CVV</label>
+                    <div id="gs-card-cvv" style={cloverFieldStyle} />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Zip</label>
+                    <div id="gs-card-postal" style={cloverFieldStyle} />
+                  </div>
+                </div>
                 {!sdkReady && (
                   <p style={{ fontSize: 12, color: "#9ca3af", margin: "6px 0 0", textAlign: "center" }}>
                     ⏳ Loading secure payment form…

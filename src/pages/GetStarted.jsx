@@ -211,6 +211,12 @@ export default function GetStarted() {
         return;
       }
 
+      // Clover's ecommerce customer API does not return card brand/last4 on
+      // the customer object, so the only place we can capture display info
+      // is the tokenization result itself, here in the browser.
+      const cardBrand = result?.card?.brand || result?.token?.card?.brand;
+      const cardLast4 = result?.card?.last4 || result?.token?.card?.last4;
+
       // 2. Call Supabase Edge Function — creates account + stores card in Clover
       const { data, error: fnError } = await supabase.functions.invoke(
         "save-card-for-trial",
@@ -225,6 +231,8 @@ export default function GetStarted() {
             password: form.password,
             phone: form.phone.trim() || null,
             tradeType: form.tradeType,
+            cardBrand,
+            cardLast4,
           },
         }
       );

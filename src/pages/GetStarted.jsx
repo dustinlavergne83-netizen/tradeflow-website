@@ -325,7 +325,7 @@ export default function GetStarted() {
               💳 Billing info
             </p>
             <p style={{ fontSize: 13, color: "#b45309", margin: 0, lineHeight: 1.6 }}>
-              No charge today. Your card will be billed <strong>$49/mo</strong> (+ $5/employee after 5) when your 14-day trial ends.
+              No charge today. Your card will be billed <strong>$49/mo flat</strong> — any number of employees — when your 14-day trial ends.
             </p>
           </div>
 
@@ -411,7 +411,7 @@ export default function GetStarted() {
                   <span style={{ color: "#374151", fontWeight: 700 }}>$49/mo</span>
                 </div>
                 <div style={{ fontSize: 12, color: "#6b7280", paddingTop: 4, borderTop: "1px solid #d1fae5" }}>
-                  Up to 5 employees included · +$5/employee after that · Cancel anytime
+                  Unlimited employees included · Cancel anytime
                 </div>
               </div>
             </div>

@@ -812,7 +812,7 @@ export default function Landing() {
                 <span style={{ fontSize: 18, color: BRAND.textLight, fontWeight: 600 }}>/month</span>
               </div>
               <p style={{ fontSize: 15, color: BRAND.textMid, fontWeight: 700, marginBottom: 32 }}>
-                Up to 5 employees included · <span style={{ color: BRAND.orange }}>+$5/employee after that</span>
+                <span style={{ color: BRAND.orange }}>Unlimited employees included</span> — one flat price
               </p>
 
               {/* Feature list */}
@@ -858,27 +858,6 @@ export default function Landing() {
               </p>
             </div>
 
-            {/* Pricing example */}
-            <div style={{
-              backgroundColor: BRAND.gray,
-              borderRadius: 16, padding: "20px 28px", marginTop: 24,
-              border: "1px solid #e2e8f0",
-            }}>
-              <p style={{ fontSize: 14, fontWeight: 800, color: BRAND.textDark, marginBottom: 12 }}>💡 Example pricing:</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {[
-                  ["1–5 employees", "$49/mo"],
-                  ["6 employees", "$54/mo"],
-                  ["10 employees", "$74/mo"],
-                  ["15 employees", "$99/mo"],
-                ].map(([label, price]) => (
-                  <div key={label} style={{ display: "flex", justifyContent: "space-between", fontSize: 14, color: BRAND.textMid }}>
-                    <span style={{ fontWeight: 600 }}>{label}</span>
-                    <span style={{ fontWeight: 800, color: BRAND.blue }}>{price}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>

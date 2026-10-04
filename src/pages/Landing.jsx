@@ -999,6 +999,22 @@ export default function Landing() {
             ))}
           </div>
 
+          <div style={{ display: "flex", gap: 20, flexWrap: "wrap", justifyContent: "center" }}>
+            {[
+              ["Privacy Policy", () => navigate("/privacy")],
+              ["Terms of Service", () => navigate("/terms")],
+              ["Delete Account", () => navigate("/data-deletion")],
+            ].map(([label, action]) => (
+              <button key={label} onClick={action} style={{
+                background: "none", border: "none",
+                color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: 600,
+                cursor: "pointer", padding: 0,
+              }}>
+                {label}
+              </button>
+            ))}
+          </div>
+
           <div style={{ color: "rgba(255,255,255,0.25)", fontSize: 13 }}>
             © {new Date().getFullYear()} TradeFlow LLC · tradeflowllc.com
             <br />

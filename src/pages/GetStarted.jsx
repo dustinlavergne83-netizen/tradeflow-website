@@ -231,10 +231,12 @@ export default function GetStarted() {
         password: form.password,
       });
 
-      // 4. Show success
+      // 4. Show success — send them to their actual dashboard (they're
+      // already signed in from step 3), not back to the marketing site's
+      // sign-in page.
       setStep(3);
       setTimeout(() => {
-        window.location.href = "/signin";
+        window.location.href = `${APP_URL}/dashboard`;
       }, 4000);
 
     } catch (err) {
